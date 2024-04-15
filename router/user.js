@@ -11,8 +11,10 @@ router.post('/login', user_handler.login_handler)
 router.get('/getUserinfo', user_handler.getUserinfo_handler)
 // 获取品牌管理数据接口
 router.post('/getBrandData', user_handler.getBrandData_handler)
-// 添加或编辑品牌数据接口
+// 添加或修改品牌数据接口
 router.post('/uploadImg', user_handler.uploadImg_handler)
+// 修改品牌brandName接口
+router.post('/uploadBrandName', user_handler.uploadBrandName_handler)
 // 删除某个品牌数据接口
 router.post('/delBrandData', user_handler.delBrandData_handler)
 // 获取用户管理数据接口

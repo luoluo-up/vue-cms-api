@@ -1,106 +1,15 @@
+// 引入模块
+const { formidable } = require('formidable')
+const path = require('path')
+const fs = require('fs')
+
+
 // 随机唯一值id
 var uuid = require('node-uuid');
 // console.log(uuid.v1());  // 根据时间
 // console.log(uuid.v4()); // 根据随机数
 // 品牌管理数据
-let tableData = [
-    {
-        brandId: uuid.v4(),
-        brandName: '小米',
-        brandLogo: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-        sortID: '产品1'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: '苹果',
-        brandLogo: 'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKHOADErHAAAQBezsFBo612.jpg',
-        sortID: '产品2'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: '华为',
-        brandLogo: 'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKF2AWpcKAADv98DWYRo516.jpg',
-        sortID: '产品3'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: 'OPPO',
-        brandLogo: 'http://39.98.123.211/group1/M00/02/DA/rBHu8mGxOciADR75AAE6kN74a-E289.png',
-        sortID: '产品4'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: '小米2',
-        brandLogo: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-        sortID: '产品5'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: '苹果2',
-        brandLogo: 'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKHOADErHAAAQBezsFBo612.jpg',
-        sortID: '产品6'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: '华为2',
-        brandLogo: 'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKF2AWpcKAADv98DWYRo516.jpg',
-        sortID: '产品7'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: 'OPPO2',
-        brandLogo: 'http://39.98.123.211/group1/M00/02/DA/rBHu8mGxOciADR75AAE6kN74a-E289.png',
-        sortID: '产品8'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: '小米3',
-        brandLogo: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-        sortID: '产品9'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: '苹果3',
-        brandLogo: 'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKHOADErHAAAQBezsFBo612.jpg',
-        sortID: '产品10'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: '华为3',
-        brandLogo: 'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKF2AWpcKAADv98DWYRo516.jpg',
-        sortID: '产品11'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: 'OPPO3',
-        brandLogo: 'http://39.98.123.211/group1/M00/02/DA/rBHu8mGxOciADR75AAE6kN74a-E289.png',
-        sortID: '产品12'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: '小米4',
-        brandLogo: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-        sortID: '产品13'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: '苹果4',
-        brandLogo: 'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKHOADErHAAAQBezsFBo612.jpg',
-        sortID: '产品14'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: '华为4',
-        brandLogo: 'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKF2AWpcKAADv98DWYRo516.jpg',
-        sortID: '产品15'
-    },
-    {
-        brandId: uuid.v4(),
-        brandName: 'OPPO4',
-        brandLogo: 'http://39.98.123.211/group1/M00/02/DA/rBHu8mGxOciADR75AAE6kN74a-E289.png',
-        sortID: '产品16'
-    },
-]
+let tableData = []
 // 用户管理数据
 let userData = [
     {
@@ -374,7 +283,7 @@ exports.getBrandData_handler = (req, res) => {
         })
     }
 }
-//添加或编辑品牌数据方法
+// 添加或修改品牌数据方法
 exports.uploadImg_handler = (req, res) => {
     if (req.headers.token) {
         // 判断当前的用户是否存在
@@ -391,42 +300,108 @@ exports.uploadImg_handler = (req, res) => {
             })
             return
         }
-        const data = req.body
-        if (data.brandId) {
-            let idx
-            const result = tableData.some((item, index) => {
-                if (item.brandId == data.brandId) {
-                    idx = index
-                    return true
+        const incomingForm = formidable({
+            uploadDir: path.resolve(__dirname, '../public/images'),
+            keepExtensions: true
+        })
+        incomingForm.parse(req, (err, fileBody, { file }) => {
+            // console.log(file[0].newFilename);
+            // console.log(path.resolve(__dirname, '../public/images'));
+            if (err) {
+                next()
+                return
+            }
+            // 编辑
+            if (fileBody.brandId[0]) {
+                console.log('编辑', fileBody);
+                let idx
+                const result = tableData.some((item, index) => {
+                    if (item.brandId == fileBody.brandId[0]) {
+                        idx = index
+                        return true
+                    }
+                })
+                if (result) {
+                    tableData[idx].brandLogo = fileBody.brandLogo[0]
+                    res.send({
+                        code: 200,
+                        status: 1,
+                        message: '上传成功',
+                    })
+                } else {
+                    res.send({
+                        code: 200,
+                        status: 0,
+                        message: '上传失败',
+                    })
                 }
-            })
-            // console.log(idx, result);  // 修改数组
-            if (result) {
-                tableData[idx].brandName = data.brandName
-                tableData[idx].brandLogo = data.brandLogo
+            }
+            // 添加
+            else {
+                // let brandLogo = `${path.resolve(__dirname, '../public/images')}\\${file[0].newFilename}`
+                // brandLogo = brandLogo.split('\\').join('/')
+                tableData.push({
+                    brandId: uuid.v4(),
+                    brandName: fileBody.brandName[0],
+                    brandLogo: fileBody.brandLogo[0],
+                    // brandLogo: brandLogo,
+                    sortID: '产品' + (tableData.length + 1)
+                })
                 res.send({
                     code: 200,
                     status: 1,
-                    message: '修改品牌数据成功',
-                })
-            } else {
-                res.send({
-                    code: 200,
-                    status: 0,
-                    message: '修改品牌数据失败',
+                    message: '上传成功',
                 })
             }
-        } else {
-            data.brandId = uuid.v4()
-            data.sortID = '产品' + (tableData.length + 1)
-            tableData.push(data)
-            // console.log('追加数组', data);
+        })
+    } else {
+        res.send({
+            code: 200,
+            status: -1,
+            message: '用户已注销或TOKEN已过期',
+        })
+    }
+}
+// 修改品牌brandName方法
+exports.uploadBrandName_handler = (req, res) => {
+    if (req.headers.token) {
+        // 判断当前的用户是否存在
+        const isExist = userData.some(item => {
+            if (item.token == req.headers.token) {
+                return true
+            }
+        })
+        if (!isExist) {
+            res.send({
+                code: 200,
+                status: -1,
+                message: '用户已注销或TOKEN已过期',
+            })
+            return
+        }
+        const data = req.body
+        let idx
+        const result = tableData.some((item, index) => {
+            if (item.brandId == data.brandId) {
+                idx = index
+                return true
+            }
+        })
+        if (result) {
+            tableData[idx].brandName = data.brandName;
             res.send({
                 code: 200,
                 status: 1,
-                message: '添加品牌数据成功',
+                message: '修改成功',
+            })
+        } else {
+            res.send({
+                code: 200,
+                status: 0,
+                message: '修改失败',
             })
         }
+
     } else {
         res.send({
             code: 200,
@@ -792,3 +767,8 @@ exports.distribute_handler = (req, res) => {
         })
     }
 }
+
+
+
+
+

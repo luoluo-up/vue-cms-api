@@ -26,6 +26,7 @@ app.use('/myApi', useRouter)
 //     res.header("Access-Control-Allow-Methods", "DELETE,PUT,POST,GET,OPTIONS");
 // })
 
+app.use(express.static('public'))
 
 app.listen(8080, () => {
     console.log('开启服务器：http:127.0.0.1:8080');
