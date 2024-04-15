@@ -28,6 +28,6 @@ app.use('/myApi', useRouter)
 
 app.use(express.static('public'))
 
-app.listen(8080, () => {
-    console.log('开启服务器：http:127.0.0.1:8080');
+app.listen(80, () => {
+    console.log('开启服务器：http:127.0.0.1:80');
 }) 
