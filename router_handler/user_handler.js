@@ -158,7 +158,8 @@ const asyncRoutes = [
         ]
     },
 ]
-
+//  留言板数据
+let messageData = []
 
 
 
@@ -767,7 +768,105 @@ exports.distribute_handler = (req, res) => {
         })
     }
 }
+// 获取浏览板数据方法
+exports.getMessage_handler = (req, res) => {
+    if (req.headers.token) {
+        // 判断当前的用户是否存在
+        const isExist = userData.some(item => {
+            if (item.token == req.headers.token) {
+                return true
+            }
+        })
+        if (!isExist) {
+            res.send({
+                code: 200,
+                status: -1,
+                message: '用户已注销或TOKEN已过期',
+            })
+            return
+        }
+        res.send({
+            code: 200,
+            status: 1,
+            message: '浏览板数据获取成功',
+            data: {
+                messageData
+            }
+        })
+    } else {
+        res.send({
+            code: 200,
+            status: -1,
+            message: '用户已注销或TOKEN已过期',
+        })
+    }
+}
+// 获取浏览板数据方法
+exports.getMessage_handler = (req, res) => {
+    if (req.headers.token) {
+        // 判断当前的用户是否存在
+        const isExist = userData.some(item => {
+            if (item.token == req.headers.token) {
+                return true
+            }
+        })
+        if (!isExist) {
+            res.send({
+                code: 200,
+                status: -1,
+                message: '用户已注销或TOKEN已过期',
+            })
+            return
+        }
+        res.send({
+            code: 200,
+            status: 1,
+            message: '浏览板数据获取成功',
+            data: {
+                messageData
+            }
+        })
+    } else {
+        res.send({
+            code: 200,
+            status: -1,
+            message: '用户已注销或TOKEN已过期',
+        })
+    }
+}
 
+
+// 添加浏览板数据方法
+exports.addMessage_handler = (req, res) => {
+    if (req.headers.token) {
+        // 判断当前的用户是否存在
+        const isExist = userData.some(item => {
+            if (item.token == req.headers.token) {
+                return true
+            }
+        })
+        if (!isExist) {
+            res.send({
+                code: 200,
+                status: -1,
+                message: '用户已注销或TOKEN已过期',
+            })
+            return
+        }
+        messageData.unshift(req.body)
+        res.send({
+            code: 200,
+            status: 1,
+            message: '添加成功',
+        })
+    } else {
+        res.send({
+            code: 200,
+            status: -1,
+            message: '用户已注销或TOKEN已过期',
+        })
+    }
+}
 
 
 

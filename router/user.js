@@ -31,7 +31,10 @@ router.post('/changeState', user_handler.changeState_handler)
 router.get('/getAsyncRoute', user_handler.getAsyncRoute_handler)
 // 分配菜单权限接口
 router.post('/distribute', user_handler.distribute_handler)
-
+// 获取浏览板数据接口
+router.get('/getMessage', user_handler.getMessage_handler)
+// 添加浏览板数据接口
+router.post('/addMessage', user_handler.addMessage_handler)
 
 
 module.exports = router
