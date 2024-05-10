@@ -1,4 +1,3 @@
-
 const express = require('express')
 const app = express()
 
@@ -28,9 +27,9 @@ app.use('/myApi', useRouter)
 // })
 
 app.use(express.static('public'))
-app.get('/', (req, res) => {
-    res.end('home')
-})
+// app.get('/', (req, res) => {
+//     res.end('home')
+// })
 
 app.listen(8080, () => {
     console.log('开启服务器：http:127.0.0.1:8080');

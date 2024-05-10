@@ -339,13 +339,12 @@ exports.uploadImg_handler = (req, res) => {
             }
             // 添加
             else {
-                // let brandLogo = `${path.resolve(__dirname, '../public/images')}\\${file[0].newFilename}`
-                // brandLogo = brandLogo.split('\\').join('/')
+                console.log(path.resolve(__dirname, `../public/images\\${file[0].newFilename}`));
                 tableData.push({
                     brandId: uuid.v4(),
                     brandName: fileBody.brandName[0],
-                    brandLogo: fileBody.brandLogo[0],
-                    // brandLogo: brandLogo,
+                    // brandLogo: fileBody.brandLogo[0],
+                    brandLogo: path.resolve(__dirname, `../public/images\\${file[0].newFilename}`),
                     sortID: '产品' + (tableData.length + 1)
                 })
                 res.send({
