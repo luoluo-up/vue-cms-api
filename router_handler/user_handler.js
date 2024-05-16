@@ -314,7 +314,7 @@ exports.uploadImg_handler = (req, res) => {
             }
             // 编辑
             if (fileBody.brandId[0]) {
-                console.log('编辑', fileBody);
+                // console.log('编辑', fileBody);
                 let idx
                 const result = tableData.some((item, index) => {
                     if (item.brandId == fileBody.brandId[0]) {
@@ -323,7 +323,7 @@ exports.uploadImg_handler = (req, res) => {
                     }
                 })
                 if (result) {
-                    tableData[idx].brandLogo = fileBody.brandLogo[0]
+                    tableData[idx].brandLogo = 'http://127.0.0.1:8080/images/' + file[0].newFilename
                     res.send({
                         code: 200,
                         status: 1,
@@ -342,7 +342,6 @@ exports.uploadImg_handler = (req, res) => {
                 tableData.push({
                     brandId: uuid.v4(),
                     brandName: fileBody.brandName[0],
-                    // brandLogo: fileBody.brandLogo[0],
                     brandLogo: 'http://127.0.0.1:8080/images/' + file[0].newFilename,
                     sortID: '产品' + (tableData.length + 1)
                 })
