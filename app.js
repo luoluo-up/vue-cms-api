@@ -26,10 +26,8 @@ app.use('/myApi', useRouter)
 //     res.header("Access-Control-Allow-Methods", "DELETE,PUT,POST,GET,OPTIONS");
 // })
 
-app.use(express.static('public'))
-// app.get('/', (req, res) => {
-//     res.end('home')
-// })
+// 配置静态资源目录
+app.use(express.static(__dirname + '/public'))
 
 app.listen(8080, () => {
     console.log('开启服务器：http:127.0.0.1:8080');
