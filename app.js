@@ -13,8 +13,8 @@ var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
 // 使用自己的路由，前面参数是每个接口前面都需要添加的默认路径
-const useRouter = require("./router/user");
-app.use("/myApi", useRouter);
+// const useRouter = require("./router/user");
+// app.use("/myApi", useRouter);
 
 // app.all("*", function (req, res, next) {
 //     //设置允许跨域的域名，*代表允许任意域名跨域
