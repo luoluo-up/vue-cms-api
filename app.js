@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-
+// const test = require("./router/user");
 // 配置 cors 中间件
 const cors = require("cors");
 app.use(cors());
@@ -31,5 +31,4 @@ app.use(express.static(__dirname + "/public"));
 app.listen(8080, () => {
   console.log("开启服务器：http:127.0.0.1:8080");
 });
-
 module.exports = app;
