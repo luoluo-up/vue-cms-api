@@ -1,8 +1,9 @@
 const express = require("express");
+const app = require("../app");
 // 创建路由对象
 const router = express.Router();
 const user_handler = require("../router_handler/user_handler");
-router.get("/test", async (req, res) => {
+app.get("/test", async (req, res) => {
   res.send("test");
 });
 // 登录接口接口
