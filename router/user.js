@@ -1,4 +1,4 @@
-// const express = require("express");
+const express = require("express");
 const app = require("../app");
 app.get("/test", async (req, res) => {
   res.send("test");
